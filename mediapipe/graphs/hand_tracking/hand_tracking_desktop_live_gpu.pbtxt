@@ -28,7 +28,7 @@ node {
   input_stream: "IMAGE:input_video"
   input_side_packet: "NUM_HANDS:num_hands"
   output_stream: "LANDMARKS:hand_landmarks"
-
+y
 }
 
 # Subgraph that renders annotations and overlays them on top of the input

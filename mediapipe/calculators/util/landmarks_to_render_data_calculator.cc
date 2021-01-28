@@ -24,6 +24,9 @@
 #include "mediapipe/framework/port/ret_check.h"
 #include "mediapipe/util/color.pb.h"
 #include "mediapipe/util/render_data.pb.h"
+
+#include <iostream>
+#include <fstream>
 namespace mediapipe {
 
 namespace {
@@ -335,6 +338,49 @@ mediapipe::Status LandmarksToRenderDataCalculator::Process(
       landmark_data->set_normalized(true);
       landmark_data->set_x(landmark.x());
       landmark_data->set_y(landmark.y());
+    }
+    std::string thumbx;
+    std::string thumby;
+    std::string indexx;
+    std::string indexy;
+
+    for (int i = 4; i < 3; i = i+4) { // second value 9
+      const NormalizedLandmark& landmark = landmarks.landmark(i);
+
+      if (options_.utilize_visibility() &&
+          landmark.visibility() < options_.visibility_threshold()) {
+        continue;
+      }
+
+      auto* landmark_data_render = AddPointRenderData(
+          options_.landmark_color(), thickness, render_data.get());
+
+      auto* landmark_data = landmark_data_render->mutable_point();
+      landmark_data->set_normalized(true);
+      landmark_data->set_x(landmark.x());
+      landmark_data->set_y(landmark.y());
+    }
+    
+
+    thumbx = std::to_string(landmarks.landmark(4).x());
+    thumby = std::to_string(landmarks.landmark(4).y());
+
+
+    indexx = std::to_string(landmarks.landmark(8).x());
+    indexy = std::to_string(landmarks.landmark(8).y());
+
+    std::string filename = "tmp/test_file.csv";
+    std::ofstream myfile;
+    myfile.open(filename, std::ios_base::app);
+    if (myfile.is_open())
+    {
+      std::string coord = indexx + "," + indexy +  "," + thumbx + "," + thumby + "\n";
+      myfile << coord;
+      myfile.close();
+    }
+    else 
+    {
+      std::cout << "Unable to open file" << std::endl;
     }
   }
 
