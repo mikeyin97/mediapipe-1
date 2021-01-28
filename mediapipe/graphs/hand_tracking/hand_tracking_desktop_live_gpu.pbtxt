@@ -17,7 +17,7 @@ node {
   output_side_packet: "PACKET:num_hands"
   node_options: {
     [type.googleapis.com/mediapipe.ConstantSidePacketCalculatorOptions]: {
-      packet { int_value: 2 }
+      packet { int_value: 1 }
     }
   }
 }
@@ -28,10 +28,7 @@ node {
   input_stream: "IMAGE:input_video"
   input_side_packet: "NUM_HANDS:num_hands"
   output_stream: "LANDMARKS:hand_landmarks"
-  output_stream: "HANDEDNESS:handedness"
-  output_stream: "PALM_DETECTIONS:palm_detections"
-  output_stream: "HAND_ROIS_FROM_LANDMARKS:hand_rects_from_landmarks"
-  output_stream: "HAND_ROIS_FROM_PALM_DETECTIONS:hand_rects_from_palm_detections"
+
 }
 
 # Subgraph that renders annotations and overlays them on top of the input
@@ -39,10 +36,6 @@ node {
 node {
   calculator: "HandRendererSubgraph"
   input_stream: "IMAGE:input_video"
-  input_stream: "DETECTIONS:palm_detections"
   input_stream: "LANDMARKS:hand_landmarks"
-  input_stream: "HANDEDNESS:handedness"
-  input_stream: "NORM_RECTS:0:hand_rects_from_palm_detections"
-  input_stream: "NORM_RECTS:1:hand_rects_from_landmarks"
   output_stream: "IMAGE:output_video"
 }
