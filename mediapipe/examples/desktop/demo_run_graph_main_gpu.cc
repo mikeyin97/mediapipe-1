@@ -70,7 +70,7 @@ mediapipe::Status RunMPPGraph() {
   if (load_video) {
     capture.open(FLAGS_input_video_path);
   } else {
-    capture.open(0);
+    capture.open("/dev/video1");
   }
   RET_CHECK(capture.isOpened());
 
@@ -81,7 +81,7 @@ mediapipe::Status RunMPPGraph() {
 #if (CV_MAJOR_VERSION >= 3) && (CV_MINOR_VERSION >= 2)
     capture.set(cv::CAP_PROP_FRAME_WIDTH, 640);
     capture.set(cv::CAP_PROP_FRAME_HEIGHT, 480);
-    capture.set(cv::CAP_PROP_FPS, 30);
+    capture.set(cv::CAP_PROP_FPS, 120);
 #endif
   }
 

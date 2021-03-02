@@ -60,7 +60,7 @@ mediapipe::Status RunMPPGraph() {
   if (load_video) {
     capture.open(FLAGS_input_video_path);
   } else {
-    capture.open(0);
+    capture.open("/dev/video2");
   }
   RET_CHECK(capture.isOpened());
 
